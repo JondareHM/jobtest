@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
-
+from .models import Movie
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    movie_list = Movie.objects.order_by('id')
+    context = {'movie_list': movie_list}
+    return render(request, 'film/index.html', context)
 
-def detail(request, movie_id):
-    return HttpResponse("You're looking at the movie %s." % question_id)
+def detail(request, id):
+    movie = get_object_or_404(Movie, pk=id)
+    return render(request, 'film/detail.html', {'movie': movie})
