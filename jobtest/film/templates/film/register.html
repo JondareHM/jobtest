@@ -1,14 +1,18 @@
 {% block content %}
-  <h2>Register a movie</h2>
-  <form method="get">
-    <input type="text" name="title">
-    <button type="submit">Register Movie</button>
-  </form>
-  {% if movie.Response == "True" %}
-    <p><strong>{{ movie.Genre }}</strong></p>
-  {% else %}
-  {% if movie.Response == "False" %}
-    <p><strong>No movie found</strong></p>
-  {% endif %}
-  {% endif %}
+{% if movie.Response == "True" %}
+    <p><strong>Your search matched the movie {{ movie.Title }}</strong></p>
+	<p><img src={{ movie.Poster }} alt="Poster Image"></p>
+	<p><strong>With genre {{ movie.Genre }}</strong></p>
+	<p><strong>If this is correct, add the media you own the movie as, and register it</strong></p>
+	<form method="POST" name="register">
+		{% csrf_token %}
+		<input type="text" name="media">
+		<button type="submit">Register Movie</button>
+	</form>
+{% else %}
+	{% if movie.Response == "False" %}
+		<p><strong>No movie found</strong></p>
+		<p><a href="{% url 'search' %}">Go back to search</a></p>
+	{% endif %}
+{% endif %}
 {% endblock %}
