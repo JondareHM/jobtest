@@ -27,9 +27,10 @@ def register(request):
 		url = 'http://www.omdbapi.com/?apikey=4e898dbb&t={0}'.format(title)
 		response = requests.get(url)
 		movie = response.json()
-		movie_title = movie['Title']
-		movie_genre = movie['Genre']
-		movie_poster = movie['Poster']
+		if movie['Response'] == 'True':
+			movie_title = movie['Title']
+			movie_genre = movie['Genre']
+			movie_poster = movie['Poster']
 	if 'media' in request.POST:
 		movie_media = request.POST.get('media')
 		new_movie = Movie(title=movie_title, genre=movie_genre, poster=movie_poster, media=movie_media)
